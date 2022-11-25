@@ -1,15 +1,29 @@
-import { useState } from "react"
+import { useState,useEffect } from "react"
+import {useNavigate} from 'react-router-dom'
+import {useDispatch,useSelector} from 'react-redux'
+import {login,reset} from '../features/auth/authSlice'
+import {Audio} from 'react-loader-spinner'
+import Alert from '../components/Alert'
 
 function Login(){
+    const dispatch=useDispatch()
+    const navigate=useNavigate()
+    const {user,isLoading,isSuccess,isError,message}=useSelector((state)=>state.auth)
     const [formData,setFormData]=useState({
         email:'',
         password:''
     })
     const {email,password}=formData
 
+    useEffect(()=>{
+        if(user){
+            navigate('/')
+        }
+        dispatch(reset())
+    },[isSuccess])
    const onSubmit=(e)=>{
     e.preventDefault()
-    console.log(formData)
+    dispatch(login(formData))
 
 
    }
@@ -21,10 +35,27 @@ function Login(){
         })
     })
    }
+   if(isLoading){
+    return(
+        <>
+            <div style={{"textAlign":"center"}}>
+                <Audio
+            height="80"
+            width="80"
+            radius="15"
+            color="red"
+            ariaLabel="loading"
+            wrapperStyle
+            wrapperClass
+            />
+            </div>
+        </>
+    )
+   }
 
     return (
         <>
-            
+            {isError&&<Alert/>}
             <div className='container mt-5 ' style={{"textAlign":"center"}} >
             <h1 className="my-5">Login</h1>
             <form onSubmit={onSubmit}>

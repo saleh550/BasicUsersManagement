@@ -1,7 +1,20 @@
-import { useState } from "react"
-import {Link} from 'react-router-dom'
+import { useState,useEffect } from "react"
+import {Link,useNavigate} from 'react-router-dom'
+import {useSelector ,useDispatch} from 'react-redux'
+import {register ,reset} from '../features/auth/authSlice'
+import Alert from "../components/Alert"
+import { Audio } from 'react-loader-spinner'
 
 function Register(){
+    const dispatch=useDispatch()
+    const {user,isLoading,isSuccess,isError,message}=useSelector((state)=>state.auth)
+    const navigate=useNavigate()
+    useEffect(()=>{
+        if(user){
+            navigate('/')
+        }
+        dispatch(reset())
+    },[isSuccess])
     const [formData,setFormData]=useState({
         name:'',
         email:'',
@@ -16,8 +29,7 @@ function Register(){
 
     const onSubmit=(e)=>{
         e.preventDefault()
-        console.log(formData)
-        console.log(name,email,password,password2,phoneNumber)
+        dispatch(register({formData}))
     }
     const onChange=(e)=>{
         setFormData((prevState)=>{
@@ -27,9 +39,25 @@ function Register(){
             })
         })
        }
+       if(isLoading){
+        return (
+            <div style={{"textAlign":"center"}}>
+                <Audio
+            height="80"
+            width="80"
+            radius="15"
+            color="green"
+            ariaLabel="loading"
+            wrapperStyle
+            wrapperClass
+            />
+            </div>
+            
+        )
+       }
     return (
         <>
-            
+            {isError&&<Alert/>}
             <div className='container mt-5 ' style={{"textAlign":"center"}} >
             <h1 className="my-5">Login</h1>
             <form onSubmit={onSubmit}>

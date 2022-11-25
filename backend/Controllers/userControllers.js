@@ -15,7 +15,8 @@ const generateToken=(id)=>{
 //@route POST /api/users
 //@access public
 const registrUser=asyncHandler( async (req,res)=>{
-    const {email, password ,password2 ,name, phoneNumber}=req.body
+    
+     const {email, password ,password2 ,name, phoneNumber}=req.body.formData
 
     if(password!==password2){
         res.status(500)
@@ -61,17 +62,14 @@ const registrUser=asyncHandler( async (req,res)=>{
         res.status(400)
         throw new Error(error)
     }
-    	
-    
- 
- })
+ }
+ )
  
  //@desc login with existing user
 //@route POST /api/users/login
 //@access publice
 const loginUser=asyncHandler( async (req,res)=>{
    const {email,password}=req.body
-   console.log(email,password)
     try {
         const user =await User.findOne({email})
         if(user && (bcrypt.compare(user.password,password))){
