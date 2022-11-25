@@ -8,10 +8,18 @@ function Login(){
     const {email,password}=formData
 
    const onSubmit=(e)=>{
+    e.preventDefault()
+    console.log(formData)
+
 
    }
    const onChange=(e)=>{
-
+    setFormData((prevState)=>{
+        return({
+            ...prevState,
+            [e.target.name]:e.target.value
+        })
+    })
    }
 
     return (
