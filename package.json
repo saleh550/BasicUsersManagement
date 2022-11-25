@@ -7,7 +7,8 @@
     "express-async-handler": "^1.2.0",
     "jsonwebtoken": "^8.5.1",
     "mongoos": "^0.0.1-security",
-    "mongoose": "^6.7.3"
+    "mongoose": "^6.7.3",
+    "react-router-dom": "^6.4.3"
   },
   "name": "termi-lingodev",
   "version": "1.0.0",
